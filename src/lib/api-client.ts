@@ -12,7 +12,7 @@ export function createApiClient(hasAuth?: boolean) {
 
     apiClient.interceptors.request.use((config) => {
         if (hasAuth) {
-            const token = localStorage.getItem('adminToken');
+            const token = localStorage.getItem(import.meta.env.VITE_TOKEN);
             if (token) {
                 config.headers['Authorization'] = `Bearer ${token}`;
                 config.headers['Accept'] = 'application/json';

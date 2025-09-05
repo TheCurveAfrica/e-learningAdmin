@@ -19,8 +19,8 @@ const Button: React.FC<ButtonProps> = ({
     ...props
 }) => {
     const variants: Record<Variant, string> = {
-        primary: 'bg-teal-600 hover:bg-teal-700 text-white',
-        secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-900',
+        primary: 'bg-[#FB8500] text-white',
+        secondary: 'bg-gray-200 text-gray-900',
         ghost: 'hover:bg-gray-100 text-gray-700'
     };
 
@@ -32,7 +32,7 @@ const Button: React.FC<ButtonProps> = ({
 
     return (
         <button
-            className={`inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ${variants[variant]} ${sizes[size]} ${className}`}
+            className={`inline-flex items-center justify-center rounded-lg cursor-pointer font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#FB8500] focus:ring-offset-2 ${variants[variant]} ${sizes[size]} ${className}`}
             onClick={onClick}
             {...props}
         >
