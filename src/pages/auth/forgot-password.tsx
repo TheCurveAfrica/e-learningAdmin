@@ -4,10 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FormInput } from '../../components/ui/form-components';
 import Button from '../../components/ui/button';
 import { useForgotPassword } from '../../hooks/use-auth';
-
-interface ForgotPasswordFormData {
-    email: string;
-}
+import { forgotPasswordValidationSchema } from '../../schemas/auth-schemas';
+import { ForgotPasswordRequest } from '@/types/auth-type';
 
 const ForgotPassword: React.FC = () => {
     const navigate = useNavigate();
@@ -17,9 +15,9 @@ const ForgotPassword: React.FC = () => {
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm<ForgotPasswordFormData>();
+    } = useForm<ForgotPasswordRequest>();
 
-    const onSubmit = async (data: ForgotPasswordFormData) => {
+    const onSubmit = async (data: ForgotPasswordRequest) => {
         try {
             await forgotPasswordMutation.mutateAsync(data);
             navigate(`/verify-email?email=${encodeURIComponent(data.email)}`);
@@ -53,13 +51,7 @@ const ForgotPassword: React.FC = () => {
                             autoComplete="email"
                             placeholder='Enter email'
                             error={errors.email}
-                            {...register('email', {
-                                required: 'Email is required',
-                                pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                    message: 'Invalid email address'
-                                }
-                            })}
+                            {...register('email', forgotPasswordValidationSchema.email)}
                         />
                     </div>
 

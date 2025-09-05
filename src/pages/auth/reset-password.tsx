@@ -4,11 +4,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { FormInput } from '../../components/ui/form-components';
 import Button from '../../components/ui/button';
 import { useResetPassword } from '../../hooks/use-auth';
-
-interface ResetPasswordFormData {
-    password: string;
-    confirmPassword: string;
-}
+import { ResetPasswordFormData, resetPasswordValidationSchema, confirmPasswordValidationSchema } from '../../schemas/auth-schemas';
 
 const ResetPassword: React.FC = () => {
     const [searchParams] = useSearchParams();
@@ -63,17 +59,7 @@ const ResetPassword: React.FC = () => {
                             placeholder="New password"
                             autoComplete="new-password"
                             error={errors.password}
-                            {...register('password', {
-                                required: 'Password is required',
-                                minLength: {
-                                    value: 8,
-                                    message: 'Password must be at least 8 characters'
-                                },
-                                pattern: {
-                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-                                    message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
-                                }
-                            })}
+                            {...register('password', resetPasswordValidationSchema.password)}
                         />
 
                         <FormInput
@@ -84,11 +70,7 @@ const ResetPassword: React.FC = () => {
                             placeholder="Confirm your password"
                             autoComplete="new-password"
                             error={errors.confirmPassword}
-                            {...register('confirmPassword', {
-                                required: 'Please confirm your password',
-                                validate: value =>
-                                    value === password || 'Passwords do not match'
-                            })}
+                            {...register('confirmPassword', confirmPasswordValidationSchema(password))}
                         />
                     </div>
 

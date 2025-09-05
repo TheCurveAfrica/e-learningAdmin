@@ -4,10 +4,8 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { FormInput } from '../../components/ui/form-components';
 import Button from '../../components/ui/button';
 import { useVerifyEmail, useResendCode } from '../../hooks/use-auth';
-
-interface VerifyEmailFormData {
-    code: string;
-}
+import { verifyEmailValidationSchema } from '../../schemas/auth-schemas';
+import { VerifyEmailRequest } from '@/types/auth-type';
 
 const VerifyEmail: React.FC = () => {
     const [searchParams] = useSearchParams();
@@ -21,15 +19,14 @@ const VerifyEmail: React.FC = () => {
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm<VerifyEmailFormData>();
+    } = useForm<VerifyEmailRequest>();
 
-    const onSubmit = async (data: VerifyEmailFormData) => {
+    const onSubmit = async (data: VerifyEmailRequest) => {
         try {
             await verifyEmailMutation.mutateAsync({
                 email,
                 code: data.code
             });
-            // Navigate to reset password page with email parameter
             navigate(`/reset-password?email=${encodeURIComponent(email)}`);
         } catch (error) {
             console.error('Verification error:', error);
@@ -85,13 +82,7 @@ const VerifyEmail: React.FC = () => {
                             placeholder="Enter your 6-digit Code"
                             maxLength={6}
                             error={errors.code}
-                            {...register('code', {
-                                required: 'Verification code is required',
-                                pattern: {
-                                    value: /^[0-9]{6}$/,
-                                    message: 'Please enter a valid 6-digit code'
-                                }
-                            })}
+                            {...register('code', verifyEmailValidationSchema.code)}
                         />
                     </div>
 
