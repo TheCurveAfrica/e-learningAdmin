@@ -69,7 +69,7 @@ const Login: React.FC = () => {
                             type="submit"
                             disabled={loginMutation.isPending}
                             className="w-full"
-                            size="lg"
+                            size="md"
                         >
                             {loginMutation.isPending ? 'Signing in...' : 'Login'}
                         </Button>
