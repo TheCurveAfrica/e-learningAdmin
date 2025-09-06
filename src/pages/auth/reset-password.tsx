@@ -44,7 +44,7 @@ const ResetPassword: React.FC = () => {
                     <h2 className="mt-6 text-center text-3xl font-[600] text-[#2D2F30]">
                         New Password
                     </h2>
-                    <p className="mt-4 text-center font-[400] text-base text-[#525454]">
+                    <p className="mt-4 text-center font-[400] text-lg text-[#525454]">
                         All set! Now create a new password.
                     </p>
                 </div>
@@ -79,7 +79,7 @@ const ResetPassword: React.FC = () => {
                             type="submit"
                             disabled={resetPasswordMutation.isPending}
                             className="w-full"
-                            size="lg"
+                            size="md"
                         >
                             {resetPasswordMutation.isPending ? 'Updating Password...' : 'Update Password'}
                         </Button>

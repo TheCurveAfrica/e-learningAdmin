@@ -60,7 +60,7 @@ const ForgotPassword: React.FC = () => {
                             type="submit"
                             disabled={forgotPasswordMutation.isPending}
                             className="w-full"
-                            size="lg"
+                            size="md"
                         >
                             {forgotPasswordMutation.isPending ? 'Sending...' : 'Continue'}
                         </Button>

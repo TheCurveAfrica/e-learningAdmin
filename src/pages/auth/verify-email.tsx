@@ -43,21 +43,21 @@ const VerifyEmail: React.FC = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
+            <div className="max-w-lg w-full space-y-8">
                 <span className='flex justify-center pb-6'>
                     <img src="/Logo.png" alt="" />
                 </span>
-                <div className='m-0'>
+                <div className='m-0 w-full'>
                     <h2 className="mt-6 text-center text-3xl font-[600] text-[#2D2F30]">
-                        Check Your Email
+                        Check Your Inbox!
                     </h2>
-                    <p className="mt-4 text-center font-[400] text-base text-[#525454]">
-                        Enter the 6-digit code we just sent to{' '}
+                    <p className="mt-4 text-center font-[400] text-lg text-[#525454]">
+                        Enter the 6-digit code we just sent to {""}
                         <span className="font-medium text-[#2D2F30]">{email}</span>
                     </p>
                 </div>
                 <div className="text-center mt-3 flex items-center justify-center gap-1">
-                    <p className="text-sm text-[#525454]">
+                    <p className="text-lg text-[#525454]">
                         Didn’t get it? Check your spam folder. or
                     </p>
                     <button
@@ -91,7 +91,7 @@ const VerifyEmail: React.FC = () => {
                             type="submit"
                             disabled={verifyEmailMutation.isPending}
                             className="w-full"
-                            size="lg"
+                            size="md"
                         >
                             {verifyEmailMutation.isPending ? 'Verifying...' : 'Verify Code'}
                         </Button>
