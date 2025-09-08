@@ -4,6 +4,7 @@ import Login from "@/pages/auth/login";
 import ForgotPassword from "@/pages/auth/forgot-password";
 import VerifyEmail from "@/pages/auth/verify-email";
 import ResetPassword from "@/pages/auth/reset-password";
+import Settings from "@/pages/auth/settinng/setting";
 
 
 function App() {
@@ -23,6 +24,10 @@ function App() {
         {
             path: "/reset-password",
             element: <ResetPassword />,
+        },
+        {
+            path: "/settings",
+            element: <Settings />,
         }
     ])
     return (
