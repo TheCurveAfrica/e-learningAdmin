@@ -20,15 +20,16 @@ const ResetPassword: React.FC = () => {
         formState: { errors }
     } = useForm<ResetPasswordFormData>();
 
-    const password = watch('password');
+    const password = watch('newPassword');
 
     const onSubmit = async (data: ResetPasswordFormData) => {
         try {
             await resetPasswordMutation.mutateAsync({
                 email,
-                password: data.password
+                newPassword: data.newPassword,
+                confirmPassword: data.confirmPassword
             });
-            navigate('/login');
+            navigate('/');
         } catch (error) {
             console.error('Reset password error:', error);
         }
@@ -58,8 +59,8 @@ const ResetPassword: React.FC = () => {
                             required
                             placeholder="New password"
                             autoComplete="new-password"
-                            error={errors.password}
-                            {...register('password', resetPasswordValidationSchema.password)}
+                            error={errors.newPassword}
+                            {...register('newPassword', resetPasswordValidationSchema.newPassword)}
                         />
 
                         <FormInput

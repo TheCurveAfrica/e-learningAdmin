@@ -13,10 +13,10 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3300,
+    port: 3000,
   },
   preview: {
-    port: 3300,
+    port: 3000,
   },
   build: {
     rollupOptions: {

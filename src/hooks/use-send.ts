@@ -3,20 +3,18 @@ import { AxiosRequestConfig, Method } from 'axios';
 import { toast } from 'sonner';
 
 import { createApiClient } from '@/lib/api-client';
-import { QueryResponse } from '@/types/api';
 import { generateQueryKey } from '@/utils/format';
 
 type AllowedMethodType = 'post' | 'put' | 'delete' | 'get' | 'patch';
 
-interface IUseSendOptions<TData = unknown, RequestBodyType = unknown> {
+interface IUseSendOptions<TData = unknown> {
     url: string;
     method: Extract<Method, AllowedMethodType>;
     hasAuth?: boolean;
     onSuccess?: (data: TData) => void;
     onError?: (error: Error) => void;
-    invalidateKeys?:
-    [];
-    config?: AxiosRequestConfig<RequestBodyType>;
+    invalidateKeys?: string[];
+    config?: AxiosRequestConfig;
     showSuccessMessage?: boolean;
     showErrorMessage?: boolean;
     successMessage?: React.ReactNode;
@@ -38,33 +36,36 @@ export default function useSend<RequestBodyType, TData>({
     schema,
     config,
     ...options
-}: IUseSendOptions<TData, QueryResponse<RequestBodyType>>) {
+}: IUseSendOptions<TData>) {
     const queryClient = useQueryClient();
     const apiClient = createApiClient(hasAuth);
 
-    const parseResponseData = (data?: QueryResponse<TData>) => {
+    const parseResponseData = (data: any) => {
         if (!data) return;
-        if (!schema) return data?.data;
-        return schema.parse(data?.data);
+        if (!schema) return data?.data || data;
+        return schema.parse(data?.data || data);
     };
 
     return useMutation({
         mutationFn: async (variables: RequestBodyType) => {
-            const response = await apiClient[method]<QueryResponse<TData>>(
-                url,
-                variables,
-                config
-            );
-            return response.data;
+            let response;
+
+            if (method === 'get' || method === 'delete') {
+                response = await (apiClient as any)[method](url, config);
+            } else {
+                response = await (apiClient as any)[method](url, variables, config);
+            }
+
+            return response;
         },
-        onSuccess: (data) => {
-            const keys = invalidateKeys || url.split('/').filter((key) => key !== '');
-            keys.forEach((key) => {
+        onSuccess: (data: any) => {
+            const keys = invalidateKeys || url.split('/').filter((key: string) => key !== '');
+            keys.forEach((key: string) => {
                 queryClient.invalidateQueries({ queryKey: generateQueryKey(key) });
             });
 
             if (showSuccessMessage) {
-                const message = successMessage || data.message;
+                const message = successMessage || data?.message || 'Success!';
                 toast.success(message);
             }
 

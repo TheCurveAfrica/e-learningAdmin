@@ -1,56 +1,13 @@
-import { LoginRequest, LoginResponse, ForgotPasswordRequest, VerifyEmailRequest, ResetPasswordRequest, ResendCodeRequest } from '@/types/auth-type';
+import { AdminUser } from '@/types/auth-type';
 import { createApiClient } from '../lib/api-client';
 import { ApiResponse } from '../types/api';
 
 export class OnboardingApiService {
-    private apiClient = createApiClient(false);
     private authApiClient = createApiClient(true);
 
-  
-    async login(credentials: LoginRequest): Promise<ApiResponse<LoginResponse>> {
+    async getCurrentAdmin(): Promise<ApiResponse<AdminUser>> {
         try {
-            const response = await this.apiClient.post('/auth/login', credentials) as ApiResponse<LoginResponse>;
-
-            if (response.success && response.data.token) {
-                localStorage.setItem(import.meta.env.VITE_TOKEN, response.data.token);
-            }
-
-            return response;
-        } catch (error) {
-            throw this.handleApiError(error);
-        }
-    }
-
-    async forgotPassword(request: ForgotPasswordRequest): Promise<ApiResponse<{ message: string }>> {
-        try {
-            const response = await this.apiClient.post('/auth/forgot-password', request) as ApiResponse<{ message: string }>;
-            return response;
-        } catch (error) {
-            throw this.handleApiError(error);
-        }
-    }
-
-    async verifyEmail(request: VerifyEmailRequest): Promise<ApiResponse<{ token?: string; message: string }>> {
-        try {
-            const response = await this.apiClient.post('/auth/verify-email', request) as ApiResponse<{ token?: string; message: string }>;
-            return response;
-        } catch (error) {
-            throw this.handleApiError(error);
-        }
-    }
-
-    async resetPassword(request: ResetPasswordRequest): Promise<ApiResponse<{ message: string }>> {
-        try {
-            const response = await this.apiClient.post('/auth/reset-password', request) as ApiResponse<{ message: string }>;
-            return response;
-        } catch (error) {
-            throw this.handleApiError(error);
-        }
-    }
-
-    async resendVerificationCode(request: ResendCodeRequest): Promise<ApiResponse<{ message: string }>> {
-        try {
-            const response = await this.apiClient.post('/auth/resend-code', request) as ApiResponse<{ message: string }>;
+            const response = await this.authApiClient.get('/auth/profile') as ApiResponse<AdminUser>;
             return response;
         } catch (error) {
             throw this.handleApiError(error);
@@ -58,25 +15,22 @@ export class OnboardingApiService {
     }
 
     async logout(): Promise<void> {
-            localStorage.removeItem(import.meta.env.VITE_TOKEN_);
-    }
-
-    async getCurrentAdmin(): Promise<ApiResponse<LoginResponse['user']>> {
-        try {
-            const response = await this.authApiClient.get('/auth/profile') as ApiResponse<LoginResponse['user']>;
-            return response;
-        } catch (error) {
-            throw this.handleApiError(error);
-        }
+        localStorage.removeItem(import.meta.env.VITE_TOKEN);
+        localStorage.removeItem(import.meta.env.VITE_TOKEN_REFRESH);
     }
 
     isAuthenticated(): boolean {
-        const token = localStorage.getItem('adminToken');
-        return !!token;
+        const token = localStorage.getItem(import.meta.env.VITE_TOKEN);
+        const refreshToken = localStorage.getItem(import.meta.env.VITE_TOKEN_REFRESH);
+        return !!(token || refreshToken);
     }
 
     getStoredToken(): string | null {
-        return localStorage.getItem('adminToken');
+        return localStorage.getItem(import.meta.env.VITE_TOKEN);
+    }
+
+    getStoredRefreshToken(): string | null {
+        return localStorage.getItem(import.meta.env.VITE_TOKEN_REFRESH);
     }
 
     private handleApiError(error: any): Error {
