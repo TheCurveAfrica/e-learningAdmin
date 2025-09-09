@@ -1,14 +1,33 @@
-import React from 'react';
+import TabComponent from "@/components/ui/tab";
+import { useState } from "react";
+import CommunitySettings from "./community";
 
-const Settings: React.FC = () => {
-    return (
-            <div className="p-6">
-                <h1 className="text-2xl font-bold text-gray-900 mb-6">Settings</h1>
-                <div className="bg-white rounded-lg shadow p-6">
-                    <p className="text-gray-600">Settings page content goes here.</p>
-                </div>
-            </div>
-    );
+const Settings = () => {
+  const [activeTab, setActiveTab] = useState("Community");
+
+  const tabs = [
+    {
+      label: "Community",
+      content: <CommunitySettings />,
+    },
+  ];
+
+  return (
+    <div className="p-4 space-y-6 ">
+      <div>
+        <h1 className="text-lg font-semibold text-[#2D2F30]">Settings</h1>
+        <span className="text-sm font-normal text-[#525454]">
+          Here you can manage platform’s preferences
+        </span>
+      </div>
+
+      <TabComponent
+        tabs={tabs}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
+    </div>
+  );
 };
 
 export default Settings;
