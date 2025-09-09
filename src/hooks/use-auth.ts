@@ -14,13 +14,15 @@ export const useLogin = () => {
     const queryClient = useQueryClient();
 
     return useSend<LoginRequest, LoginResponse>({
-        url: '/auth/login',
+        url: '/auth/admins/login',
         method: 'post',
         hasAuth: false,
         successMessage: 'Login successful!',
         onSuccess: (response) => {
-            if (response.token) {
-                localStorage.setItem(import.meta.env.VITE_TOKEN_, response.token);
+            console.log(response)
+            if (response) {
+                localStorage.setItem(import.meta.env.VITE_TOKEN, response.accessToken);
+                localStorage.setItem(import.meta.env.VITE_TOKEN_REFRESH, response.refreshToken);
             }
             queryClient.invalidateQueries({ queryKey: QUERY_KEYS.auth.currentAdmin });
         },
@@ -28,10 +30,9 @@ export const useLogin = () => {
     });
 };
 
-
 export const useForgotPassword = () => {
     return useSend<ForgotPasswordRequest, { message: string }>({
-        url: '/auth/forgot-password',
+        url: '/auth/admins/forgot-password',
         method: 'post',
         hasAuth: false,
         successMessage: 'Password reset email sent successfully!',
@@ -42,7 +43,7 @@ export const useForgotPassword = () => {
 
 export const useVerifyEmail = () => {
     return useSend<VerifyEmailRequest, { token?: string; message: string }>({
-        url: '/auth/verify-email',
+        url: '/auth/admins/reset-password/verify-otp',
         method: 'post',
         hasAuth: false,
         successMessage: 'Email verified successfully!',
@@ -53,7 +54,7 @@ export const useVerifyEmail = () => {
 
 export const useResetPassword = () => {
     return useSend<ResetPasswordRequest, { message: string }>({
-        url: '/auth/reset-password',
+        url: '/auth/admins/reset-password',
         method: 'post',
         hasAuth: false,
         successMessage: 'Password reset successfully!',
@@ -101,8 +102,19 @@ export const useAuth = () => {
 
 
 export const useAuthUtils = () => {
+    const queryClient = useQueryClient();
+
+    const logout = () => {
+        localStorage.removeItem(import.meta.env.VITE_TOKEN);
+        localStorage.removeItem(import.meta.env.VITE_TOKEN_REFRESH);
+        queryClient.clear();
+        window.location.href = '/login';
+    };
+
     return {
         isAuthenticated: onboardingApiService.isAuthenticated(),
         getStoredToken: onboardingApiService.getStoredToken(),
+        getStoredRefreshToken: onboardingApiService.getStoredRefreshToken(),
+        logout,
     };
 };

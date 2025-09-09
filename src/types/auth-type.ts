@@ -3,13 +3,17 @@ export interface LoginRequest {
     password: string;
 }
 
+export interface AdminUser {
+    id: string;
+    email: string;
+    name: string;
+    role: string;
+}
+
 export interface LoginResponse {
-    user: {
-        id: string;
-        email: string;
-        name: string;
-        role: string;
-    };
+    accessToken: string;
+    refreshToken: string;
+    user: AdminUser;
     token: string;
     expiresIn: number;
 }
@@ -25,8 +29,8 @@ export interface VerifyEmailRequest {
 
 export interface ResetPasswordRequest {
     email: string;
-    password: string;
-    token?: string;
+    newPassword: string;
+    confirmPassword: string;
 }
 
 export interface ResendCodeRequest {

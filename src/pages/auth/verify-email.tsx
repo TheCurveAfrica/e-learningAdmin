@@ -56,7 +56,7 @@ const VerifyEmail: React.FC = () => {
                         <span className="font-medium text-[#2D2F30]">{email}</span>
                     </p>
                 </div>
-                <div className="text-center mt-3 flex items-center justify-center gap-1">
+                <div className="text-center mt-3 flex items-center justify-center gap-1 flex-wrap">
                     <p className="text-lg text-[#525454]">
                         Didn’t get it? Check your spam folder. or
                     </p>
