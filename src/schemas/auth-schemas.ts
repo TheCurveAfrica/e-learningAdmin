@@ -47,19 +47,19 @@ export const verifyEmailValidationSchema = {
 };
 
 export interface ResetPasswordFormData {
-    password: string;
+    newPassword: string;
     confirmPassword: string;
 }
 
 export const resetPasswordValidationSchema = {
-    password: {
+    newPassword: {
         required: 'Password is required',
         minLength: {
             value: 8,
             message: 'Password must be at least 8 characters'
         },
         pattern: STRONG_PASSWORD_PATTERN
-    } as RegisterOptions<ResetPasswordFormData, 'password'>,
+    } as RegisterOptions<ResetPasswordFormData, 'newPassword'>,
     confirmPassword: {
         required: 'Please confirm your password',
     } as RegisterOptions<ResetPasswordFormData, 'confirmPassword'>
