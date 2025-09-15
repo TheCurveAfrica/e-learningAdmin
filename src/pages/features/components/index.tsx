@@ -1,12 +1,18 @@
-
-import React from 'react';
+import React from "react";
+import Header from "./Home/Header";
+import Table from "./Home/Table";
+import Perfomers from "./Home/Perfomers";
+import Overview from "./Home/Overview";
 
 const Dashboard: React.FC = () => {
-    return (
-        <div className="space-y-6">
-            <p>Dashboard</p>
-        </div>
-    );
+  return (
+    <main className="">
+      <Header />
+      <Overview />
+      <Table />
+      <Perfomers />
+    </main>
+  );
 };
 
 export default Dashboard;
