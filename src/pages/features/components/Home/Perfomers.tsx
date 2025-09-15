@@ -2,7 +2,7 @@ import { performanceData } from "./utils";
 
 const Perfomers = () => {
   return (
-    <div className="bg-gray-100 rounded-lg p-3 mt-8">
+    <div className="bg-gray-100 rounded-lg p-4 mt-8">
       <h1 className="text-base font-semibold text-[#2D2F30] mb-3">
         Top Performers
       </h1>
@@ -10,7 +10,7 @@ const Perfomers = () => {
 
       <div className="space-y-4 mt-2" >
         {performanceData.map((performer, index) => (
-          <div className="flex items-center justify-between mt-4" key={index}>
+          <div className="flex items-center justify-between mt-8" key={index}>
             <div className="flex items-center space-x-3">
               <img
                 src={performer.avatar}
