@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+.primary-text {
+  color: #fb8500;
+  font-size: 14px;
+}
